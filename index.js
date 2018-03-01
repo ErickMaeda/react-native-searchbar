@@ -103,6 +103,14 @@ export default class Search extends Component {
     };
   }
 
+  componentDidMount() { 
+    this._ismounted = true
+  }
+  
+  componentWillUnmount() {
+     this._ismounted = false
+  }
+
   getValue = () => {
     return this.state.input;
   };
@@ -134,8 +142,10 @@ export default class Search extends Component {
         duration: animationDuration
       }).start();
       const timerId = setTimeout(() => {
-        this._doHide();
-        clearTimeout(timerId);
+        if (this._ismounted) {
+          this._doHide();
+          clearTimeout(timerId);
+        }
       }, animationDuration);
     } else {
       this.setState({ top: new Animated.Value(INITIAL_TOP) });
